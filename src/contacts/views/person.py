@@ -146,7 +146,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
         'object': person,
     }
 
-    return render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, RequestContext(request, kwvars))
 
 def delete(request, pk, slug=None, template='contacts/person/delete.html'):
     """Delete a company.

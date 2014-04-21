@@ -5,8 +5,12 @@
 	{{ special_date_formset.management_form }}
 	{% for form in special_date_formset.forms %}
 	<p>
-		{{ form.occasion }}
-		{{ form.date }}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %}
 		<label>{{ form.every_year.label }}</label>{{ form.every_year }}
 	</p>
 	<p>

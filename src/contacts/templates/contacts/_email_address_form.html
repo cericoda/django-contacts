@@ -5,8 +5,12 @@
 	{{ email_formset.management_form }}
 	{% for form in email_formset.forms %}
 	<p>
-		{{ form.email_address }}
-		{{ form.location }}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %}
 		<label>{{ form.DELETE.label }}</label>
 		{{ form.DELETE }}
 		{{ form.id }}
