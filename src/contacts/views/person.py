@@ -105,6 +105,14 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
     except person.DoesNotExist:
         raise Http404
 
+    form = PersonUpdateForm(instance=person)
+    phone_formset = PhoneNumberFormSet(instance=person)
+    email_formset = EmailAddressFormSet(instance=person)
+    im_formset = InstantMessengerFormSet(instance=person)
+    website_formset = WebSiteFormSet(instance=person)
+    address_formset = StreetAddressFormSet(instance=person)
+    special_date_formset = SpecialDateFormSet(instance=person)
+
     if request.method == 'POST':
         form = PersonUpdateForm(request.POST, instance=person)
         phone_formset = PhoneNumberFormSet(request.POST, instance=person)
@@ -126,14 +134,6 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
             special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
 
-
-    form = PersonUpdateForm(instance=person)
-    phone_formset = PhoneNumberFormSet(instance=person)
-    email_formset = EmailAddressFormSet(instance=person)
-    im_formset = InstantMessengerFormSet(instance=person)
-    website_formset = WebSiteFormSet(instance=person)
-    address_formset = StreetAddressFormSet(instance=person)
-    special_date_formset = SpecialDateFormSet(instance=person)
 
     kwvars = {
         'form': form,
