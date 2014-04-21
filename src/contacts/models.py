@@ -6,11 +6,15 @@ from django.utils.translation import ugettext as _
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.generic import GenericRelation
-
+from model_utils.models import StatusModel, TimeStampedModel
+from model_utils.choices import Choices
 from contacts.managers import SpecialDateManager
 
-class Company(models.Model):
+class Company(StatusModel, TimeStampedModel):
 	"""Company model."""
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	name = models.CharField(_('name'), max_length=200)
 	nickname = models.CharField(_('nickname'), max_length=50, blank=True,
 		null=True)
@@ -26,8 +30,7 @@ class Company(models.Model):
 	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	class Meta:
 		db_table = 'contacts_companies'
@@ -59,8 +62,11 @@ class Company(models.Model):
 			'slug': self.slug,
 		})
 
-class Person(models.Model):
+class Person(StatusModel, TimeStampedModel):
 	"""Person model."""
+	STATUS = Choices(('active', 'Active'), 
+				 ('archived', 'Archived'),
+				  )
 	first_name = models.CharField(_('first name'), max_length=100)
 	last_name = models.CharField(_('last name'), max_length=200)
 	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
@@ -83,8 +89,7 @@ class Person(models.Model):
 	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	class Meta:
 		db_table = 'contacts_people'
@@ -120,8 +125,11 @@ class Person(models.Model):
 			'slug': self.slug,
 		})
 
-class Group(models.Model):
+class Group(StatusModel, TimeStampedModel):
 	"""Group model."""
+	STATUS = Choices(('active', 'Active'), 
+                     ('archived', 'Archived'),
+                      )
 	name = models.CharField(_('name'), max_length=200)
 	slug = models.SlugField(_('slug'), max_length=50, unique=True)
 	about = models.TextField(_('about'), blank=True)
@@ -131,8 +139,7 @@ class Group(models.Model):
 	companies = models.ManyToManyField(Company, verbose_name='companies',
 		blank=True, null=True)
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	class Meta:
 		db_table = 'contacts_groups'
@@ -188,8 +195,11 @@ class Location(models.Model):
 		verbose_name = _('location')
 		verbose_name_plural = _('locations')
 
-class PhoneNumber(models.Model):
+class PhoneNumber(StatusModel, TimeStampedModel):
 	"""Phone Number model."""
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -198,8 +208,7 @@ class PhoneNumber(models.Model):
 	phone_number = models.CharField(_('number'), max_length=50)
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	def __unicode__(self):
 		return u"%s (%s)" % (self.phone_number, self.location)
@@ -209,7 +218,16 @@ class PhoneNumber(models.Model):
 		verbose_name = 'phone number'
 		verbose_name_plural = 'phone numbers'
 
-class EmailAddress(models.Model):
+
+class EmailAddress(StatusModel, TimeStampedModel):
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
+	LOCATION_CHOICES = (
+		('work', _('Work')),
+		('person', _('Personal')),
+		('other', _('Other'))
+	)
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -218,8 +236,7 @@ class EmailAddress(models.Model):
 	email_address = models.EmailField(_('email address'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	def __unicode__(self):
 		return u"%s (%s)" % (self.email_address, self.location)
@@ -229,7 +246,10 @@ class EmailAddress(models.Model):
 		verbose_name = 'email address'
 		verbose_name_plural = 'email addresses'
 
-class InstantMessenger(models.Model):
+class InstantMessenger(StatusModel, TimeStampedModel):
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	OTHER = 'other'
 	
 	IM_SERVICE_CHOICES = (
@@ -245,7 +265,6 @@ class InstantMessenger(models.Model):
 		('google-talk', _('Google Talk')),
 		(OTHER, _('Other'))
 	)
-	
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -256,8 +275,7 @@ class InstantMessenger(models.Model):
 	service = models.CharField(_('service'), max_length=11,
 		choices=IM_SERVICE_CHOICES, default=OTHER)
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	def __unicode__(self):
 		return u"%s (%s)" % (self.im_account, self.location)
@@ -267,7 +285,10 @@ class InstantMessenger(models.Model):
 		verbose_name = 'instant messenger'
 		verbose_name_plural = 'instant messengers'
 
-class WebSite(models.Model):
+class WebSite(StatusModel, TimeStampedModel):
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -276,8 +297,7 @@ class WebSite(models.Model):
 	url = models.URLField(_('URL'))
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	def __unicode__(self):
 		return u"%s (%s)" % (self.url, self.location)
@@ -290,31 +310,37 @@ class WebSite(models.Model):
 	def get_absolute_url(self):
 		return u"%s?web_site=%s" % (self.content_object.get_absolute_url(), self.pk)
 
-class StreetAddress(models.Model):
+class StreetAddress(StatusModel, TimeStampedModel):
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
 	content_object = generic.GenericForeignKey()
 	
 	street = models.TextField(_('street'), blank=True)
+	street2 = models.TextField(_('street2'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
-	country = models.CharField(_('country'), max_length=100)
+	country = models.CharField(_('country'), max_length=100, default="UK")
 	location = models.ForeignKey(Location, limit_choices_to={'is_phone': False})
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	def __unicode__(self):
-		return u"%s (%s)" % (self.city, self.location)
+		return u"%s %s (%s)" % (self.street, self.city, self.location)
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
 		verbose_name = _('street address')
 		verbose_name_plural = _('street addresses')
 
-class SpecialDate(models.Model):
+class SpecialDate(StatusModel, TimeStampedModel):
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -324,8 +350,7 @@ class SpecialDate(models.Model):
 	date = models.DateField(_('date'))
 	every_year = models.BooleanField(_('every year'), default=True)
 	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
+
 	
 	objects = SpecialDateManager()
 	
