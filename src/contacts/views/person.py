@@ -125,8 +125,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
             address_formset.save()
             special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
-        else:
-            return HttpResponseServerError
+
 
     form = PersonUpdateForm(instance=person)
     phone_formset = PhoneNumberFormSet(instance=person)
