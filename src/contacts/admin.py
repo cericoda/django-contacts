@@ -61,14 +61,14 @@ class PersonAdmin(admin.ModelAdmin):
 
 class GroupAdmin(admin.ModelAdmin):
 	list_display_links = ('name',)
-	list_display = ('name', 'date_modified')
-	ordering = ('-date_modified', 'name',)
+	list_display = ('name', 'modified')
+	ordering = ('-modified', 'name',)
 	search_fields = ['^name', '^about',]
 	prepopulated_fields = {'slug': ('name',)}
 
 class LocationAdmin(admin.ModelAdmin):
 	list_display_links = ('name',)
-	list_display = ('name', 'date_modified')
+	list_display = ('name', 'modified')
 	ordering = ('weight', 'name')
 	search_fields = ['^name',]
 	prepopulated_fields = {'slug': ('name',)}

@@ -173,6 +173,10 @@ class Group(StatusModel, TimeStampedModel):
 
 class Location(StatusModel, TimeStampedModel):
 	"""Location model."""
+	STATUS = Choices(('active', 'Active'), 
+					 ('archived', 'Archived'),
+					  )
+
 	WEIGHT_CHOICES = [(i,i) for i in range(11)]
 	
 	name = models.CharField(_('name'), max_length=200)
