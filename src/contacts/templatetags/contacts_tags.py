@@ -61,7 +61,7 @@ class RecentCreatedCompanies(template.Node):
         self.var_name = var_name
     
     def render(self, context):
-        companies = Company.objects.all().order_by("-date_added")[:int(self.limit)]
+        companies = Company.objects.all().order_by("-created")[:int(self.limit)]
         if (int(self.limit) == 1):
             context[self.var_name] = companies[0]
         else:
@@ -117,7 +117,7 @@ class RecentCreatedPeople(template.Node):
         self.var_name = var_name
 
     def render(self, context):
-        people = Person.objects.all().order_by("-date_added")[:int(self.limit)]
+        people = Person.objects.all().order_by("-created")[:int(self.limit)]
         if (int(self.limit) == 1):
             context[self.var_name] = people[0]
         else:

@@ -171,7 +171,7 @@ class Group(StatusModel, TimeStampedModel):
 			'slug': self.slug,
 		})
 
-class Location(models.Model):
+class Location(StatusModel, TimeStampedModel):
 	"""Location model."""
 	WEIGHT_CHOICES = [(i,i) for i in range(11)]
 	
@@ -182,10 +182,7 @@ class Location(models.Model):
 	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
 	
 	weight = models.IntegerField(max_length=2, choices=WEIGHT_CHOICES, default=0)
-	
-	date_added = models.DateTimeField(_('date added'), auto_now_add=True)
-	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
-	
+		
 	def __unicode__(self):
 		return u"%s" % (self.name)
 	

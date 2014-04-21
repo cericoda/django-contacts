@@ -5,8 +5,8 @@
 		"fields": {
 			"name": "Other",
 			"slug": "other",
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 10
 		}
 	},
@@ -16,8 +16,8 @@
 		"fields": {
 			"name": "Work",
 			"slug": "work",
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 1
 		}
 	},
@@ -27,8 +27,8 @@
 		"fields": {
 			"name": "Home",
 			"slug": "home",
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 2
 		}
 	},
@@ -38,8 +38,8 @@
 		"fields": {
 			"name": "Mobile",
 			"slug": "mobile",
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 3
 		}
 	},
@@ -50,8 +50,8 @@
 			"name": "Fax",
 			"slug": "fax",
 			"is_phone": true,
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 4
 		}
 	},
@@ -62,8 +62,8 @@
 			"name": "Pager",
 			"slug": "pager",
 			"is_phone": true,
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 5
 		}
 	},
@@ -74,8 +74,8 @@
 			"name": "Headquarters",
 			"slug": "headquarters",
 			"is_street_address": true,
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 3
 		}
 	},
@@ -86,8 +86,8 @@
 			"name": "Branch Office",
 			"slug": "branch-office",
 			"is_street_address": true,
-			"date_modified": "2013-08-14 09:56:06",
-			"date_added": "2013-08-14 09:56:06",
+			"modified": "2013-08-14 09:56:06",
+			"created": "2013-08-14 09:56:06",
 			"weight": 4
 		}
 	}
