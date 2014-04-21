@@ -63,6 +63,9 @@ class Company(StatusModel, TimeStampedModel):
 
 class Person(StatusModel, TimeStampedModel):
 	"""Person model."""
+	STATUS = Choices(('active', 'Active'), 
+				 ('archived', 'Archived'),
+				  )
 	first_name = models.CharField(_('first name'), max_length=100)
 	last_name = models.CharField(_('last name'), max_length=200)
 	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
