@@ -288,10 +288,11 @@ class StreetAddress(models.Model):
 	content_object = generic.GenericForeignKey()
 	
 	street = models.TextField(_('street'), blank=True)
+	street2 = models.TextField(_('street2'), blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
-	country = models.CharField(_('country'), max_length=100)
+	country = models.CharField(_('country'), max_length=100, default="UK")
 	location = models.CharField(_('location'), max_length=6,
 		choices=LOCATION_CHOICES, default='work')
 	
@@ -299,7 +300,7 @@ class StreetAddress(models.Model):
 	date_modified = models.DateTimeField(_('date modified'), auto_now=True)
 	
 	def __unicode__(self):
-		return u"%s (%s)" % (self.city, self.location)
+		return u"%s %s (%s)" % (self.street, self.city, self.location)
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
