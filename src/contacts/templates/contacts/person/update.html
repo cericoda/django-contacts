@@ -1,28 +1,18 @@
 {% extends "contacts/person/base.html" %}
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ block.super }}: {% trans "Edit" %} {{ object }}{% endblock %}
 
-{% block content_title %}
-	<h2>{% trans "Edit" %} {{ object }}</h2>
-{% endblock %}
-
 {% block content %}
-	<form action="." method="post" accept-charset="utf-8">
-        {% csrf_token %}
-    {% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-        </div>
-    {% endfor %}
-
-		{% include "contacts/_phone_number_form.html" %}
-		{% include "contacts/_email_address_form.html" %}
-		{% include "contacts/_instant_messenger_form.html" %}
-		{% include "contacts/_web_site_form.html" %}
-		{% include "contacts/_street_address_form.html" %}
-		{% include "contacts/_special_date_form.html" %}
+	<h1>{% trans "Edit" %} {{ object }}</h1>
+	<form action="." method="post" class='form-inline' accept-charset="utf-8" novalidate>
+    <p>{% crispy form %}</p>
+    
+		<p>{% include "contacts/_phone_number_form.html" %}</p>
+		<p>{% include "contacts/_email_address_form.html" %}</p>
+		<p>{% include "contacts/_web_site_form.html" %}</p>
+		<p>{% include "contacts/_street_address_form.html" %}</p>
 
 		<p><input type="submit" value="{% trans "Save" %}"></p>
 	</form>

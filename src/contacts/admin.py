@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.comments.models import Comment
 
-from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, InstantMessenger, WebSite, StreetAddress, SpecialDate, Location
+from contacts.models import Company, Person, Group, PhoneNumber, EmailAddress, WebSite, StreetAddress, Location
 
 class EmailAddressInline(generic.GenericTabularInline):
 	model = EmailAddress
@@ -10,17 +10,11 @@ class EmailAddressInline(generic.GenericTabularInline):
 class PhoneNumberInline(generic.GenericTabularInline):
 	model = PhoneNumber
 
-class InstantMessengerInline(generic.GenericTabularInline):
-	model = InstantMessenger
-
 class WebSiteInline(generic.GenericTabularInline):
 	model = WebSite
 
 class StreetAddressInline(generic.GenericStackedInline):
 	model = StreetAddress
-
-class SpecialDateInline(generic.GenericStackedInline):
-	model = SpecialDate
 
 class CommentInline(generic.GenericStackedInline):
 	model = Comment
@@ -30,10 +24,8 @@ class CompanyAdmin(admin.ModelAdmin):
 	inlines = [
 		PhoneNumberInline,
 		EmailAddressInline,
-		InstantMessengerInline,
 		WebSiteInline,
 		StreetAddressInline,
-		SpecialDateInline,
 		CommentInline,
 	]
 	
@@ -45,10 +37,8 @@ class PersonAdmin(admin.ModelAdmin):
 	inlines = [
 		PhoneNumberInline,
 		EmailAddressInline,
-		InstantMessengerInline,
 		WebSiteInline,
 		StreetAddressInline,
-		SpecialDateInline,
 		CommentInline,
 	]
 	

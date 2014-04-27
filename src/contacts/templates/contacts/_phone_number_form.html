@@ -1,19 +1,12 @@
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 <fieldset id="phone_numbers">
 	<legend>{% trans "Phone numbers" %}</legend>
 	{{ phone_formset.management_form }}
 	{% for form in phone_formset.forms %}
-	<p>
-    {% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            {{ field.label_tag }} {{ field }}
-        </div>
-    {% endfor %}
-		<label>{{ form.DELETE.label }}</label>
-		{{ form.DELETE }}
-		{{ form.id }}
-	</p>
+	 <p>
+     {% crispy form %}
+	 </p>
 	{% endfor %}
 </fieldset>

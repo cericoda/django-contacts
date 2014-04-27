@@ -239,24 +239,8 @@ msgstr ""
 msgid "Email Addresses"
 msgstr ""
 
-#: templates/contacts/_instant_messenger_form.html:4
-msgid "Instant messengers"
-msgstr ""
-
-#: templates/contacts/_instant_messenger_list.html:5
-msgid "Instant Messengers"
-msgstr ""
-
 #: templates/contacts/_phone_number_form.html:4
 msgid "Phone numbers"
-msgstr ""
-
-#: templates/contacts/_phone_number_list.html:5
-msgid "Phone Numbers"
-msgstr ""
-
-#: templates/contacts/_special_date_form.html:4
-msgid "Special Dates"
 msgstr ""
 
 #: templates/contacts/_special_date_list.html:5

@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
 from contacts.models import Person
-from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
+from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, WebSiteFormSet, StreetAddressFormSet
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
@@ -105,44 +105,37 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
     except person.DoesNotExist:
         raise Http404
 
-    form = PersonUpdateForm(instance=person)
-    phone_formset = PhoneNumberFormSet(instance=person)
-    email_formset = EmailAddressFormSet(instance=person)
-    im_formset = InstantMessengerFormSet(instance=person)
-    website_formset = WebSiteFormSet(instance=person)
-    address_formset = StreetAddressFormSet(instance=person)
-    special_date_formset = SpecialDateFormSet(instance=person)
-
     if request.method == 'POST':
         form = PersonUpdateForm(request.POST, instance=person)
         phone_formset = PhoneNumberFormSet(request.POST, instance=person)
         email_formset = EmailAddressFormSet(request.POST, instance=person)
-        im_formset = InstantMessengerFormSet(request.POST, instance=person)
         website_formset = WebSiteFormSet(request.POST, instance=person)
         address_formset = StreetAddressFormSet(request.POST, instance=person)
-        special_date_formset = SpecialDateFormSet(request.POST, instance=person)
 
         if form.is_valid() and phone_formset.is_valid() and \
-            email_formset.is_valid() and im_formset.is_valid() and \
+            email_formset.is_valid() and  \
             website_formset.is_valid() and address_formset.is_valid():
             form.save()
             phone_formset.save()
             email_formset.save()
-            im_formset.save()
             website_formset.save()
             address_formset.save()
-            special_date_formset.save()
             return HttpResponseRedirect(person.get_absolute_url())
+
+    else:
+        form = PersonUpdateForm(instance=person)
+        phone_formset = PhoneNumberFormSet(instance=person)
+        email_formset = EmailAddressFormSet(instance=person)
+        website_formset = WebSiteFormSet(instance=person)
+        address_formset = StreetAddressFormSet(instance=person)
 
 
     kwvars = {
         'form': form,
         'phone_formset': phone_formset,
         'email_formset': email_formset,
-        'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
-        'special_date_formset': special_date_formset,
         'object': person,
     }
 

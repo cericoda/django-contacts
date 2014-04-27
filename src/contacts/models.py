@@ -24,10 +24,8 @@ class Company(StatusModel, TimeStampedModel):
 
 	phone_number = GenericRelation('PhoneNumber')
 	email_address = GenericRelation('EmailAddress')
-	instant_messenger = GenericRelation('InstantMessenger')
 	web_site = GenericRelation('WebSite')
 	street_address = GenericRelation('StreetAddress')
-	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
 
@@ -43,7 +41,7 @@ class Company(StatusModel, TimeStampedModel):
 	
 	@permalink
 	def get_absolute_url(self):
-		return ('contacts_company_detail', None, {
+		return ('contacts_company_update', None, {
 		    'pk': self.pk,
 			'slug': self.slug,
 		})
@@ -67,7 +65,7 @@ class Person(StatusModel, TimeStampedModel):
 	STATUS = Choices(('active', 'Active'), 
 				 ('archived', 'Archived'),
 				  )
-	first_name = models.CharField(_('first name'), max_length=100)
+	first_name = models.CharField(_('first name'), max_length=100, blank=True, null=True)
 	last_name = models.CharField(_('last name'), max_length=200)
 	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
 	suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
@@ -83,10 +81,8 @@ class Person(StatusModel, TimeStampedModel):
 	
 	phone_number = GenericRelation('PhoneNumber')
 	email_address = GenericRelation('EmailAddress')
-	instant_messenger = GenericRelation('InstantMessenger')
 	web_site = GenericRelation('WebSite')
 	street_address = GenericRelation('StreetAddress')
-	special_date = GenericRelation('SpecialDate')
 	note = GenericRelation(Comment, object_id_field='object_pk')
 	
 
@@ -106,7 +102,7 @@ class Person(StatusModel, TimeStampedModel):
 	
 	@permalink
 	def get_absolute_url(self):
-		return ('contacts_person_detail', None, {
+		return ('contacts_person_update', None, {
 		    'pk': self.pk,
 			'slug': self.slug,
 		})
@@ -207,7 +203,7 @@ class PhoneNumber(StatusModel, TimeStampedModel):
 	content_object = generic.GenericForeignKey()
 	
 	phone_number = models.CharField(_('number'), max_length=50)
-	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False})
+	location = models.ForeignKey(Location, limit_choices_to={'is_phone': True})
 	
 
 	
@@ -224,11 +220,6 @@ class EmailAddress(StatusModel, TimeStampedModel):
 	STATUS = Choices(('active', 'Active'), 
 					 ('archived', 'Archived'),
 					  )
-	LOCATION_CHOICES = (
-		('work', _('Work')),
-		('person', _('Personal')),
-		('other', _('Other'))
-	)
 	content_type = models.ForeignKey(ContentType,
 		limit_choices_to={'app_label': 'contacts'})
 	object_id = models.IntegerField(db_index=True)
@@ -238,7 +229,6 @@ class EmailAddress(StatusModel, TimeStampedModel):
 	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
 	
 
-	
 	def __unicode__(self):
 		return u"%s (%s)" % (self.email_address, self.location)
 	
@@ -246,45 +236,6 @@ class EmailAddress(StatusModel, TimeStampedModel):
 		db_table = 'contacts_email_addresses'
 		verbose_name = 'email address'
 		verbose_name_plural = 'email addresses'
-
-class InstantMessenger(StatusModel, TimeStampedModel):
-	STATUS = Choices(('active', 'Active'), 
-					 ('archived', 'Archived'),
-					  )
-	OTHER = 'other'
-	
-	IM_SERVICE_CHOICES = (
-		('aim', _('AIM')),
-		('msn', _('MSN')),
-		('icq', _('ICQ')),
-		('jabber', _('Jabber')),
-		('yahoo', _('Yahoo')),
-		('skype', _('Skype')),
-		('qq', _('QQ')),
-		('sametime', _('Sametime')),
-		('gadu-gadu', _('Gadu-Gadu')),
-		('google-talk', _('Google Talk')),
-		(OTHER, _('Other'))
-	)
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
-	
-	im_account = models.CharField(_('im account'), max_length=100)
-	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': False, 'is_phone': False})
-	service = models.CharField(_('service'), max_length=11,
-		choices=IM_SERVICE_CHOICES, default=OTHER)
-	
-
-	
-	def __unicode__(self):
-		return u"%s (%s)" % (self.im_account, self.location)
-	
-	class Meta:
-		db_table = 'contacts_instant_messengers'
-		verbose_name = 'instant messenger'
-		verbose_name_plural = 'instant messengers'
 
 class WebSite(StatusModel, TimeStampedModel):
 	STATUS = Choices(('active', 'Active'), 
@@ -320,45 +271,20 @@ class StreetAddress(StatusModel, TimeStampedModel):
 	object_id = models.IntegerField(db_index=True)
 	content_object = generic.GenericForeignKey()
 	
-	street = models.TextField(_('street'), blank=True)
-	street2 = models.TextField(_('street2'), blank=True)
+	street = models.CharField(_('street'), max_length=100, blank=True)
+	street2 = models.CharField(_('street2'), max_length=100, blank=True)
 	city = models.CharField(_('city'), max_length=200, blank=True)
 	province = models.CharField(_('province'), max_length=200, blank=True)
 	postal_code = models.CharField(_('postal code'), max_length=10, blank=True)
 	country = models.CharField(_('country'), max_length=100, default="UK")
-	location = models.ForeignKey(Location, limit_choices_to={'is_phone': False})
-	
+	location = models.ForeignKey(Location, limit_choices_to={'is_street_address': True})
 
 	
 	def __unicode__(self):
-		return u"%s %s (%s)" % (self.street, self.city, self.location)
+		return u"%s, %s %s (%s)" % (self.content_object, self.street, self.city, self.location)
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
 		verbose_name = _('street address')
 		verbose_name_plural = _('street addresses')
 
-class SpecialDate(StatusModel, TimeStampedModel):
-	STATUS = Choices(('active', 'Active'), 
-					 ('archived', 'Archived'),
-					  )
-	content_type = models.ForeignKey(ContentType,
-		limit_choices_to={'app_label': 'contacts'})
-	object_id = models.IntegerField(db_index=True)
-	content_object = generic.GenericForeignKey()
-	
-	occasion = models.TextField(_('occasion'), max_length=200)
-	date = models.DateField(_('date'))
-	every_year = models.BooleanField(_('every year'), default=True)
-	
-
-	
-	objects = SpecialDateManager()
-	
-	def __unicode__(self):
-		return u"%s: %s" % (self.occasion, self.date)
-	
-	class Meta:
-		db_table = 'contacts_special_dates'
-		verbose_name = _('special date')
-		verbose_name_plural = _('special dates')

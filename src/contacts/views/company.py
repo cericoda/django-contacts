@@ -6,7 +6,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from contacts.models import Company
-from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, InstantMessengerFormSet, WebSiteFormSet, StreetAddressFormSet, SpecialDateFormSet
+from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, WebSiteFormSet, StreetAddressFormSet
+from django.contrib import messages
 
 def list(request, page=1, template='contacts/company/list.html'):
     """List of all the comapnies.
@@ -82,12 +83,14 @@ def create(request, template='contacts/company/create.html'):
                 c.slug = slugify(c.name)
 
             c.save()
+            msg = 'Company added'
+            messages.success(request, msg)
             return HttpResponseRedirect(c.get_absolute_url())
         else:
             return HttpResponseServerError
 
     kwvars = {
-        'form': CompanyCreateForm(request.POST)
+        'form': CompanyCreateForm()
     }
 
     return render_to_response(template, kwvars, RequestContext(request))
@@ -108,47 +111,45 @@ def update(request, pk, slug=None, template='contacts/company/update.html'):
     except Company.DoesNotExist:
         raise Http404
 
-    form = CompanyUpdateForm(instance=company)
-    phone_formset = PhoneNumberFormSet(instance=company)
-    email_formset = EmailAddressFormSet(instance=company)
-    im_formset = InstantMessengerFormSet(instance=company)
-    website_formset = WebSiteFormSet(instance=company)
-    address_formset = StreetAddressFormSet(instance=company)
-    special_date_formset = SpecialDateFormSet(instance=company)
     
     if request.method == 'POST':
         form = CompanyUpdateForm(request.POST, instance=company)
         phone_formset = PhoneNumberFormSet(request.POST, instance=company)
         email_formset = EmailAddressFormSet(request.POST, instance=company)
-        im_formset = InstantMessengerFormSet(request.POST, instance=company)
         website_formset = WebSiteFormSet(request.POST, instance=company)
         address_formset = StreetAddressFormSet(request.POST, instance=company)
-        special_date_formset = SpecialDateFormSet(request.POST, instance=company)
 
         if form.is_valid() and phone_formset.is_valid() and \
-            email_formset.is_valid() and im_formset.is_valid() and \
+            email_formset.is_valid() and \
             website_formset.is_valid() and address_formset.is_valid():
             form.save()
             phone_formset.save()
             email_formset.save()
-            im_formset.save()
             website_formset.save()
             address_formset.save()
-            special_date_formset.save()
-            return HttpResponseRedirect(company.get_absolute_url())
+            msg = 'Company updated'
+            messages.success(request, msg)
 
+            return HttpResponseRedirect(company.get_absolute_url())
+        
+    else:
+        
+        form = CompanyUpdateForm(instance=company)
+        phone_formset = PhoneNumberFormSet(instance=company)
+        email_formset = EmailAddressFormSet(instance=company)
+        website_formset = WebSiteFormSet(instance=company)
+        address_formset = StreetAddressFormSet(instance=company)
+        
     kwvars = {
         'form': form,
         'phone_formset': phone_formset,
         'email_formset': email_formset,
-        'im_formset': im_formset,
         'website_formset': website_formset,
         'address_formset': address_formset,
-        'special_date_formset': special_date_formset,
         'object': company,
     }
 
-    return render_to_response(template, kwvars, RequestContext(request))
+    return render_to_response(template, RequestContext(request, kwvars))
 
 def delete(request, pk, slug=None, template='contacts/company/delete.html'):
     """Update a company.
@@ -169,6 +170,9 @@ def delete(request, pk, slug=None, template='contacts/company/delete.html'):
         new_data = request.POST.copy()
         if new_data['delete_company'] == 'Yes':
             company.delete()
+            msg = 'Company deleted'
+            messages.success(request, msg)
+
             return HttpResponseRedirect(reverse('contacts_company_list'))
         else:
             return HttpResponseRedirect(company.get_absolute_url())

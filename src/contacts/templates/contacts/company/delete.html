@@ -4,10 +4,11 @@
 {% block title %}{{ block.super }}: {% trans "Delete" %} {{ object.name }}{% endblock %}
 
 {% block content_title %}
-	<h2>{% trans "Delete" %} {{ object.name }}</h2>
 {% endblock %}
 
 {% block content %}
+	<h1>{% trans "Delete" %} {{ object.name }}</h1>
+	<h2>are you sure you wish to delete company {{ object.name }}?</h2>
 	<form action="." method="post" accept-charset="utf-8">
         {% csrf_token %}
 		<p>
