@@ -39,7 +39,7 @@ setup(
 		'Programming Language :: Python',
 		'Topic :: Internet :: WWW/HTTP',
 	],
-	
-   package_data=dict( (package_name, template_patterns)
-                   for package_name in packages )
+
+   package_data={'contacts':template_patterns},
+
 )
