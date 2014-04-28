@@ -23,12 +23,6 @@ setup(
 		'distribute',
 	],
 	
-	template_patterns = [
-    'templates/*.html',
-    'templates/*/*.html',
-    'templates/*/*/*.html',
-    ],
-	
 	
 	classifiers = [
 		'Development Status :: 4 - Beta',
@@ -40,6 +34,10 @@ setup(
 		'Topic :: Internet :: WWW/HTTP',
 	],
 
-   package_data={'contacts':template_patterns},
+   package_data={'contacts':[
+						    'templates/*.html',
+						    'templates/*/*.html',
+						    'templates/*/*/*.html',
+						    ],},
 
 )
