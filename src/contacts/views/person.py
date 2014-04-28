@@ -70,7 +70,7 @@ def create(request, template='contacts/person/create.html'):
 
 
     user = request.user
-    if not user.has_perm('add_person'):
+    if not user.has_perm('contacts.add_person'):
         raise PermissionDenied
 
     if request.method == 'POST':
@@ -98,7 +98,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
 
 
     user = request.user
-    if not user.has_perm('change_person'):
+    if not user.has_perm('contacts.change_person'):
         raise PermissionDenied
 
     try:
@@ -150,7 +150,7 @@ def delete(request, pk, slug=None, template='contacts/person/delete.html'):
 
 
     user = request.user
-    if not user.has_perm('delete_person'):
+    if not user.has_perm('contacts.delete_person'):
         raise PermissionDenied
 
     try:
