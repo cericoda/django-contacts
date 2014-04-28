@@ -23,6 +23,13 @@ setup(
 		'distribute',
 	],
 	
+	template_patterns = [
+    'templates/*.html',
+    'templates/*/*.html',
+    'templates/*/*/*.html',
+    ],
+	
+	
 	classifiers = [
 		'Development Status :: 4 - Beta',
 		'Framework :: Django',
@@ -32,4 +39,7 @@ setup(
 		'Programming Language :: Python',
 		'Topic :: Internet :: WWW/HTTP',
 	],
+	
+   package_data=dict( (package_name, template_patterns)
+                   for package_name in packages )
 )
