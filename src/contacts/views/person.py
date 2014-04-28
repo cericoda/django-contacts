@@ -1,12 +1,13 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
+from django.http import Http404, HttpResponseServerError, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import slugify
 
 from contacts.models import Person
 from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, WebSiteFormSet, StreetAddressFormSet
+from django.core.exceptions import PermissionDenied
 
 def list(request, page=1, template='contacts/person/list.html'):
     """List of all the people.
@@ -70,7 +71,7 @@ def create(request, template='contacts/person/create.html'):
 
     user = request.user
     if not user.has_perm('add_person'):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     if request.method == 'POST':
         form = PersonCreateForm(request.POST)
@@ -98,7 +99,7 @@ def update(request, pk, slug=None, template='contacts/person/update.html'):
 
     user = request.user
     if not user.has_perm('change_person'):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     try:
         person = Person.objects.get(pk__iexact=pk)
@@ -150,7 +151,7 @@ def delete(request, pk, slug=None, template='contacts/person/delete.html'):
 
     user = request.user
     if not user.has_perm('delete_person'):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     try:
         person = Person.objects.get(pk__iexact=pk)
