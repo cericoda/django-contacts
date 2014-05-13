@@ -19,7 +19,7 @@ class Company(StatusModel, TimeStampedModel):
 	name = models.CharField(_('name'), max_length=200)
 	nickname = models.CharField(_('nickname'), max_length=50, blank=True,
 		null=True)
-	slug = models.AutoSlugField(_('slug'), populate_from='name')
+	slug = AutoSlugField(_('slug'), populate_from='name')
 	about = models.TextField(_('about'), blank=True, null=True)
 	logo = models.ImageField(_('photo'), upload_to='contacts/companies/', blank=True)	
 
@@ -71,7 +71,7 @@ class Person(StatusModel, TimeStampedModel):
 	middle_name = models.CharField(_('middle name'), max_length=200, blank=True, null=True)
 	suffix = models.CharField(_('suffix'), max_length=50, blank=True, null=True)
 	nickname = models.CharField(_('nickname'), max_length=100, blank=True)
-	slug = models.AutoSlugField(_('slug'), populate_from='fullname')
+	slug = AutoSlugField(_('slug'), populate_from='fullname')
 	title = models.CharField(_('title'), max_length=200, blank=True)
 	company = models.ForeignKey(Company, blank=True, null=True)
 	about = models.TextField(_('about'), blank=True)
@@ -128,7 +128,7 @@ class Group(StatusModel, TimeStampedModel):
                      ('archived', 'Archived'),
                       )
 	name = models.CharField(_('name'), max_length=200)
-	slug = models.AutoSlugField(_('slug'), populate_from='name')
+	slug = AutoSlugField(_('slug'), populate_from='name')
 	about = models.TextField(_('about'), blank=True)
 	
 	people = models.ManyToManyField(Person, verbose_name='people', blank=True,
@@ -177,7 +177,7 @@ class Location(StatusModel, TimeStampedModel):
 	WEIGHT_CHOICES = [(i,i) for i in range(11)]
 	
 	name = models.CharField(_('name'), max_length=200)
-	slug = models.AutoSlugField(_('slug'), populate_from='name')
+	slug = AutoSlugField(_('slug'), populate_from='name')
 	is_phone = models.BooleanField(_('is phone'), help_text="Only used for Phone", default=False)
 	is_street_address = models.BooleanField(_('is street address'), help_text="Only used for Street Address", default=False)
 	
