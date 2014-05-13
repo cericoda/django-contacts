@@ -31,7 +31,6 @@ class CompanyAdmin(admin.ModelAdmin):
 	
 	list_display = ('name',)
 	search_fields = ['^name',]
-	prepopulated_fields = {'slug': ('name',)}
 
 class PersonAdmin(admin.ModelAdmin):
 	inlines = [
@@ -47,29 +46,23 @@ class PersonAdmin(admin.ModelAdmin):
 	list_filter = ('company',)
 	ordering = ('last_name', 'first_name')
 	search_fields = ['^first_name', '^last_name', '^company__name']
-	prepopulated_fields = {'slug': ('first_name', 'last_name')}
 
 class GroupAdmin(admin.ModelAdmin):
 	list_display_links = ('name',)
 	list_display = ('name', 'modified')
 	ordering = ('-modified', 'name',)
 	search_fields = ['^name', '^about',]
-	prepopulated_fields = {'slug': ('name',)}
 
 class LocationAdmin(admin.ModelAdmin):
 	list_display_links = ('name',)
 	list_display = ('name', 'modified')
 	ordering = ('weight', 'name')
 	search_fields = ['^name',]
-	prepopulated_fields = {'slug': ('name',)}
 	
 	fieldsets = (
-		(None, {
-			'fields': (('name', 'slug',),)
-		}),
 		('Advanced options', {
 			'fields': (('is_phone', 'is_street_address'),)
-		})
+		}),
 	)
 
 admin.site.register(Company, CompanyAdmin)
