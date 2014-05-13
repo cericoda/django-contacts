@@ -280,7 +280,7 @@ class StreetAddress(StatusModel, TimeStampedModel):
 
 	
 	def __unicode__(self):
-		return u"%s, %s %s (%s)" % (self.street, self.street2, self.postcode, self.location)
+		return u"%s, %s %s (%s)" % (self.street, self.street2, self.postal_code, self.location)
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
