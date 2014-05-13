@@ -95,7 +95,7 @@ class Person(StatusModel, TimeStampedModel):
 		verbose_name_plural = _('people')
 	
 	def __unicode__(self):
-		return self.fullname
+		return (u"%s %s %s" % (self.title, self.first_name, self.last_name)).strip()
 	
 	@property
 	def fullname(self):
@@ -280,7 +280,7 @@ class StreetAddress(StatusModel, TimeStampedModel):
 
 	
 	def __unicode__(self):
-		return u"%s, %s %s (%s)" % (self.content_object, self.street, self.city, self.location)
+		return u"%s, %s %s (%s)" % (self.street, self.street2, self.postcode, self.location)
 	
 	class Meta:
 		db_table = 'contacts_street_addresses'
