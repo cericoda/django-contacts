@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseServerError, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.template.defaultfilters import slugify
 
 from contacts.models import Person
 from contacts.forms import PersonCreateForm, PersonUpdateForm, PhoneNumberFormSet, EmailAddressFormSet, WebSiteFormSet, StreetAddressFormSet
@@ -77,9 +76,7 @@ def create(request, template='contacts/person/create.html'):
         form = PersonCreateForm(request.POST)
 
         if form.is_valid():
-            p = form.save(commit=False)
-            p.slug = slugify("%s %s" % (p.first_name, p.last_name))
-            p.save()
+            p = form.save()
             return HttpResponseRedirect(p.get_absolute_url())
     else:
         form = PersonCreateForm()

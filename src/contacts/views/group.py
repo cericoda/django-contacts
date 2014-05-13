@@ -73,12 +73,7 @@ def create(request, template='contacts/group/create.html'):
     if request.method == 'POST':
         group_form = GroupCreateForm(request.POST)
         if group_form.is_valid():
-            g = group_form.save(commit=False)
-
-            # TODO Make sure that the slug isn't already in the database
-            g.slug = slugify(g.name)
-
-            g.save()
+            g = group_form.save()
             return HttpResponseRedirect(g.get_absolute_url())
         else:
             return HttpResponseServerError

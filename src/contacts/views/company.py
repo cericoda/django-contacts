@@ -1,5 +1,4 @@
 from django.core.urlresolvers import reverse
-from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.http import Http404, HttpResponseForbidden, HttpResponseServerError, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -10,7 +9,7 @@ from contacts.forms import CompanyCreateForm, CompanyUpdateForm, PhoneNumberForm
 from django.contrib import messages
 
 def list(request, page=1, template='contacts/company/list.html'):
-    """List of all the comapnies.
+    """List of all the companies.
 
     :param template: Add a custom template.
     """
@@ -74,15 +73,7 @@ def create(request, template='contacts/company/create.html'):
     if request.method == 'POST':
         company_form = CompanyCreateForm(request.POST)
         if company_form.is_valid():
-            c = company_form.save(commit=False)
-
-            # TODO Make sure that the slug isn't already in the database
-            if c.nickname:
-                c.slug = slugify(c.nickname)
-            else:
-                c.slug = slugify(c.name)
-
-            c.save()
+            c = company_form.save()
             msg = 'Company added'
             messages.success(request, msg)
             return HttpResponseRedirect(c.get_absolute_url())
