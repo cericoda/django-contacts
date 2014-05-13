@@ -12,6 +12,11 @@ Requirements
  * django.contrib.auth
  * django.contrib.contenttypes
  * django.contrib.comments
+ 
+ django-model-utils
+ django-import-export
+ django-autoslug
+ 
 
 Thanks
 ------
